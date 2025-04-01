@@ -1,0 +1,310 @@
+[gd_scene load_steps=25 format=3 uid="uid://dienfwi6ydrvq"]
+
+[ext_resource type="Script" uid="uid://cw2dt74eia04p" path="res://src/player.gd" id="1_pg28d"]
+[ext_resource type="Texture2D" uid="uid://5aqytx37xun3" path="res://assets/tanks/nice/tracks.png" id="2_dxtnc"]
+[ext_resource type="Texture2D" uid="uid://7422xgn8d6g4" path="res://assets/tanks/nice/Hull_02.png" id="2_rclot"]
+[ext_resource type="Texture2D" uid="uid://cr60aagilq5ht" path="res://assets/tanks/nice/Gun_01.png" id="3_rclot"]
+[ext_resource type="Script" uid="uid://d00d4qd5bsqs4" path="res://src/rotate_towards_mouse.gd" id="3_rq7o7"]
+[ext_resource type="Script" uid="uid://cvhpgrfxgh4oo" path="res://src/dash.gd" id="4_nrj4s"]
+[ext_resource type="Script" uid="uid://dyxio481h6ibk" path="res://src/shoot_on_click.gd" id="6_21lrq"]
+[ext_resource type="PackedScene" uid="uid://bq0fpi8641yeu" path="res://src/bullet.tscn" id="7_rq7o7"]
+[ext_resource type="Script" uid="uid://di1rabwf2xlwc" path="res://src/wsad_tank_movement.gd" id="8_nrj4s"]
+[ext_resource type="Script" uid="uid://b01umrcb1jow1" path="res://src/throttle_input.gd" id="9_rclot"]
+[ext_resource type="Texture2D" uid="uid://cmjnm5pokungm" path="res://assets/tanks/nice/Track_4_A.png" id="10_hclnh"]
+[ext_resource type="Texture2D" uid="uid://pncm0l736uoi" path="res://assets/tanks/nice/Track_4_B.png" id="11_ndfpv"]
+[ext_resource type="Script" uid="uid://bckq56roup5s6" path="res://src/on_take_damage.gd" id="12_fxwnc"]
+[ext_resource type="AudioStream" uid="uid://c3x0o4po4b4ud" path="res://assets/sounds/impact.mp3" id="12_nic3v"]
+
+[sub_resource type="Gradient" id="Gradient_nic3v"]
+colors = PackedColorArray(0, 0, 0, 0.713726, 0, 0, 0, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ndfpv"]
+size = Vector2(64, 48)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ndfpv"]
+
+[sub_resource type="Animation" id="Animation_hclnh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tower/TowerSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(8, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_rclot"]
+resource_name = "shoot"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tower/TowerSprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(4, 0), Vector2(8, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AudioStreamPlayer2D")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hclnh"]
+_data = {
+&"RESET": SubResource("Animation_hclnh"),
+&"shoot": SubResource("Animation_rclot")
+}
+
+[sub_resource type="Animation" id="Animation_nic3v"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LeftCaterpillar:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_hclnh")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RightCaterpillar:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_hclnh")]
+}
+
+[sub_resource type="Animation" id="Animation_dxtnc"]
+resource_name = "idle"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LeftCaterpillar:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_hclnh")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RightCaterpillar:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_hclnh")]
+}
+
+[sub_resource type="Animation" id="Animation_ndfpv"]
+resource_name = "move"
+length = 0.2
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LeftCaterpillar:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("10_hclnh"), ExtResource("11_ndfpv")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RightCaterpillar:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("10_hclnh"), ExtResource("11_ndfpv")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dxtnc"]
+_data = {
+&"RESET": SubResource("Animation_nic3v"),
+&"idle": SubResource("Animation_dxtnc"),
+&"move": SubResource("Animation_ndfpv")
+}
+
+[node name="Player" type="CharacterBody2D"]
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_pg28d")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2(-28, -18)
+scale = Vector2(0.25, 0.25)
+amount = 60
+texture = ExtResource("2_dxtnc")
+particle_flag_align_y = true
+gravity = Vector2(0, 0)
+color_ramp = SubResource("Gradient_nic3v")
+
+[node name="CPUParticles2D2" type="CPUParticles2D" parent="."]
+position = Vector2(-28, 18)
+scale = Vector2(0.25, 0.25)
+amount = 60
+texture = ExtResource("2_dxtnc")
+particle_flag_align_y = true
+gravity = Vector2(0, 0)
+color_ramp = SubResource("Gradient_nic3v")
+
+[node name="CPUParticles2D3" type="CPUParticles2D" parent="."]
+position = Vector2(4, -18)
+scale = Vector2(0.25, 0.25)
+amount = 60
+texture = ExtResource("2_dxtnc")
+particle_flag_align_y = true
+gravity = Vector2(0, 0)
+color_ramp = SubResource("Gradient_nic3v")
+
+[node name="CPUParticles2D4" type="CPUParticles2D" parent="."]
+position = Vector2(4, 18)
+scale = Vector2(0.25, 0.25)
+amount = 60
+texture = ExtResource("2_dxtnc")
+particle_flag_align_y = true
+gravity = Vector2(0, 0)
+color_ramp = SubResource("Gradient_nic3v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ndfpv")
+
+[node name="LeftCaterpillar" type="Sprite2D" parent="."]
+position = Vector2(0, -18)
+rotation = 1.5708
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("10_hclnh")
+
+[node name="RightCaterpillar" type="Sprite2D" parent="."]
+position = Vector2(0, 18)
+rotation = 1.5708
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("10_hclnh")
+
+[node name="BodySprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_ndfpv")
+rotation = 1.5708
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_rclot")
+
+[node name="Tower" type="Node2D" parent="."]
+position = Vector2(-8, 0)
+
+[node name="TowerSprite" type="Sprite2D" parent="Tower"]
+position = Vector2(8, 0)
+rotation = 1.5708
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_rclot")
+
+[node name="BulletOrigin" type="Node2D" parent="Tower"]
+position = Vector2(32, 0)
+
+[node name="Scripts" type="Node" parent="."]
+
+[node name="RotateTowardsMouse" type="Node" parent="Scripts" node_paths=PackedStringArray("body")]
+script = ExtResource("3_rq7o7")
+body = NodePath("../../Tower")
+
+[node name="Dash" type="Node" parent="Scripts" node_paths=PackedStringArray("player")]
+script = ExtResource("4_nrj4s")
+player = NodePath("../..")
+metadata/_custom_type_script = "uid://cvhpgrfxgh4oo"
+
+[node name="WsadTankMovement" type="Node" parent="Scripts" node_paths=PackedStringArray("character", "animation_player")]
+script = ExtResource("8_nrj4s")
+character = NodePath("../..")
+animation_player = NodePath("../../TrackAnimationPlayer")
+
+[node name="Shoot" type="Node" parent="Scripts" node_paths=PackedStringArray("shooter", "bullet_origin", "animation_player")]
+script = ExtResource("6_21lrq")
+shooter = NodePath("../..")
+bullet_origin = NodePath("../../Tower/BulletOrigin")
+bullet_scene = ExtResource("7_rq7o7")
+animation_player = NodePath("../../ShootAnimationPlayer")
+
+[node name="InputLeftClick" type="Node" parent="Scripts"]
+script = ExtResource("9_rclot")
+action_name = "left_click"
+
+[node name="InputSpace" type="Node" parent="Scripts"]
+script = ExtResource("9_rclot")
+action_name = "space"
+metadata/_custom_type_script = "uid://b01umrcb1jow1"
+
+[node name="OnTakeDamage" type="Node" parent="Scripts" node_paths=PackedStringArray("node")]
+script = ExtResource("12_fxwnc")
+node = NodePath("../..")
+
+[node name="ShootAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_hclnh")
+}
+
+[node name="TrackAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_dxtnc")
+}
+autoplay = "idle"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_nic3v")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../ProgressBarRoot")
+update_rotation = false
+
+[node name="ProgressBarRoot" type="Node2D" parent="."]
+top_level = true
+
+[node name="ProgressBar" type="ProgressBar" parent="ProgressBarRoot"]
+offset_left = -32.0
+offset_top = 48.0
+offset_right = 32.0
+offset_bottom = 80.0
+mouse_filter = 2
+
+[connection signal="on_hit" from="." to="Scripts/OnTakeDamage" method="start_hurt_animation"]
+[connection signal="pressed" from="Scripts/InputLeftClick" to="Scripts/Shoot" method="shoot"]
+[connection signal="pressed" from="Scripts/InputSpace" to="Scripts/Dash" method="dash"]

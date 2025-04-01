@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://bq0fpi8641yeu"]
+
+[ext_resource type="Script" uid="uid://cd2cykgmapbjr" path="res://src/fly.gd" id="1_l4h0r"]
+[ext_resource type="Script" uid="uid://br1fw610ue1go" path="res://src/expire.gd" id="2_p2hkr"]
+[ext_resource type="Texture2D" uid="uid://b6r4chct1vokx" path="res://assets/tanks/nice/Light_Shell.png" id="3_ekopx"]
+[ext_resource type="Script" uid="uid://e6a68c006ig1" path="res://src/spawn_explosion.gd" id="4_u5cjm"]
+[ext_resource type="PackedScene" uid="uid://c8lblbfyslfck" path="res://src/explosion.tscn" id="5_o8p7j"]
+[ext_resource type="Script" uid="uid://cvfwqwwvy5ul7" path="res://src/damage_player.gd" id="6_3s86r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o8p7j"]
+size = Vector2(6, 2)
+
+[node name="Bullet" type="Area2D"]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_o8p7j")
+
+[node name="Fly" type="Node" parent="." node_paths=PackedStringArray("node")]
+script = ExtResource("1_l4h0r")
+node = NodePath("..")
+speed = 1000.0
+
+[node name="Expire" type="Node" parent="." node_paths=PackedStringArray("object")]
+script = ExtResource("2_p2hkr")
+object = NodePath("..")
+time = 0.3
+
+[node name="LightShell" type="Sprite2D" parent="."]
+rotation = 1.5708
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_ekopx")
+
+[node name="SpawnExplosion" type="Node" parent="." node_paths=PackedStringArray("object")]
+script = ExtResource("4_u5cjm")
+object = NodePath("..")
+explosion_scene = ExtResource("5_o8p7j")
+metadata/_custom_type_script = "uid://e6a68c006ig1"
+
+[node name="HitPlayer" type="Node" parent="." node_paths=PackedStringArray("hit_source")]
+script = ExtResource("6_3s86r")
+hit_source = NodePath("..")
+
+[connection signal="body_entered" from="." to="HitPlayer" method="hit_player"]
+[connection signal="expired" from="Expire" to="SpawnExplosion" method="spawn_explosion"]
+[connection signal="on_hit" from="HitPlayer" to="SpawnExplosion" method="spawn_explosion"]
