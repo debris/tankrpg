@@ -1,6 +1,6 @@
-[gd_scene load_steps=25 format=3 uid="uid://dienfwi6ydrvq"]
+[gd_scene load_steps=27 format=3 uid="uid://dienfwi6ydrvq"]
 
-[ext_resource type="Script" uid="uid://cw2dt74eia04p" path="res://src/player.gd" id="1_pg28d"]
+[ext_resource type="Script" uid="uid://cw2dt74eia04p" path="res://src/game_character.gd" id="1_pg28d"]
 [ext_resource type="Texture2D" uid="uid://5aqytx37xun3" path="res://assets/tanks/nice/tracks.png" id="2_dxtnc"]
 [ext_resource type="Texture2D" uid="uid://7422xgn8d6g4" path="res://assets/tanks/nice/Hull_02.png" id="2_rclot"]
 [ext_resource type="Texture2D" uid="uid://cr60aagilq5ht" path="res://assets/tanks/nice/Gun_01.png" id="3_rclot"]
@@ -14,12 +14,14 @@
 [ext_resource type="Texture2D" uid="uid://pncm0l736uoi" path="res://assets/tanks/nice/Track_4_B.png" id="11_ndfpv"]
 [ext_resource type="Script" uid="uid://bckq56roup5s6" path="res://src/on_take_damage.gd" id="12_fxwnc"]
 [ext_resource type="AudioStream" uid="uid://c3x0o4po4b4ud" path="res://assets/sounds/impact.mp3" id="12_nic3v"]
-
-[sub_resource type="Gradient" id="Gradient_nic3v"]
-colors = PackedColorArray(0, 0, 0, 0.713726, 0, 0, 0, 0)
+[ext_resource type="Script" uid="uid://dmiqxp4p0by5o" path="res://src/health.gd" id="13_hc2cd"]
+[ext_resource type="Script" uid="uid://1bhvdr12em3r" path="res://src/health_bar.gd" id="16_mlfxl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ndfpv"]
 size = Vector2(64, 48)
+
+[sub_resource type="Gradient" id="Gradient_nic3v"]
+colors = PackedColorArray(0, 0, 0, 0.713726, 0, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ndfpv"]
 
@@ -80,7 +82,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("LeftCaterpillar:texture")
+tracks/0/path = NodePath("Body/LeftCaterpillar:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -92,7 +94,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("RightCaterpillar:texture")
+tracks/1/path = NodePath("Body/RightCaterpillar:texture")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -108,7 +110,7 @@ length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("LeftCaterpillar:texture")
+tracks/0/path = NodePath("Body/LeftCaterpillar:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -120,7 +122,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("RightCaterpillar:texture")
+tracks/1/path = NodePath("Body/RightCaterpillar:texture")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -138,7 +140,7 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("LeftCaterpillar:texture")
+tracks/0/path = NodePath("Body/LeftCaterpillar:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -150,7 +152,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("RightCaterpillar:texture")
+tracks/1/path = NodePath("Body/RightCaterpillar:texture")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -168,11 +170,17 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
+collision_mask = 3
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_pg28d")
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ndfpv")
+
+[node name="Body" type="Node2D" parent="."]
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Body"]
 position = Vector2(-28, -18)
 scale = Vector2(0.25, 0.25)
 amount = 60
@@ -181,7 +189,7 @@ particle_flag_align_y = true
 gravity = Vector2(0, 0)
 color_ramp = SubResource("Gradient_nic3v")
 
-[node name="CPUParticles2D2" type="CPUParticles2D" parent="."]
+[node name="CPUParticles2D2" type="CPUParticles2D" parent="Body"]
 position = Vector2(-28, 18)
 scale = Vector2(0.25, 0.25)
 amount = 60
@@ -190,7 +198,7 @@ particle_flag_align_y = true
 gravity = Vector2(0, 0)
 color_ramp = SubResource("Gradient_nic3v")
 
-[node name="CPUParticles2D3" type="CPUParticles2D" parent="."]
+[node name="CPUParticles2D3" type="CPUParticles2D" parent="Body"]
 position = Vector2(4, -18)
 scale = Vector2(0.25, 0.25)
 amount = 60
@@ -199,7 +207,7 @@ particle_flag_align_y = true
 gravity = Vector2(0, 0)
 color_ramp = SubResource("Gradient_nic3v")
 
-[node name="CPUParticles2D4" type="CPUParticles2D" parent="."]
+[node name="CPUParticles2D4" type="CPUParticles2D" parent="Body"]
 position = Vector2(4, 18)
 scale = Vector2(0.25, 0.25)
 amount = 60
@@ -208,22 +216,19 @@ particle_flag_align_y = true
 gravity = Vector2(0, 0)
 color_ramp = SubResource("Gradient_nic3v")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_ndfpv")
-
-[node name="LeftCaterpillar" type="Sprite2D" parent="."]
+[node name="LeftCaterpillar" type="Sprite2D" parent="Body"]
 position = Vector2(0, -18)
 rotation = 1.5708
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("10_hclnh")
 
-[node name="RightCaterpillar" type="Sprite2D" parent="."]
+[node name="RightCaterpillar" type="Sprite2D" parent="Body"]
 position = Vector2(0, 18)
 rotation = 1.5708
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("10_hclnh")
 
-[node name="BodySprite" type="Sprite2D" parent="."]
+[node name="BodySprite" type="Sprite2D" parent="Body"]
 material = SubResource("ShaderMaterial_ndfpv")
 rotation = 1.5708
 scale = Vector2(0.25, 0.25)
@@ -277,6 +282,11 @@ metadata/_custom_type_script = "uid://b01umrcb1jow1"
 script = ExtResource("12_fxwnc")
 node = NodePath("../..")
 
+[node name="Health" type="Node" parent="Scripts"]
+script = ExtResource("13_hc2cd")
+current_health = 25.0
+max_health = 30.0
+
 [node name="ShootAnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_hclnh")
@@ -292,19 +302,22 @@ autoplay = "idle"
 stream = ExtResource("12_nic3v")
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
-remote_path = NodePath("../ProgressBarRoot")
+remote_path = NodePath("../HealthBarRoot")
 update_rotation = false
 
-[node name="ProgressBarRoot" type="Node2D" parent="."]
+[node name="HealthBarRoot" type="Node2D" parent="."]
 top_level = true
 
-[node name="ProgressBar" type="ProgressBar" parent="ProgressBarRoot"]
+[node name="Healthbar" type="ProgressBar" parent="HealthBarRoot"]
 offset_left = -32.0
 offset_top = 48.0
 offset_right = 32.0
 offset_bottom = 80.0
 mouse_filter = 2
+script = ExtResource("16_mlfxl")
 
 [connection signal="on_hit" from="." to="Scripts/OnTakeDamage" method="start_hurt_animation"]
+[connection signal="on_hit" from="." to="Scripts/Health" method="take_damage"]
 [connection signal="pressed" from="Scripts/InputLeftClick" to="Scripts/Shoot" method="shoot"]
 [connection signal="pressed" from="Scripts/InputSpace" to="Scripts/Dash" method="dash"]
+[connection signal="health_changed" from="Scripts/Health" to="HealthBarRoot/Healthbar" method="set_health"]

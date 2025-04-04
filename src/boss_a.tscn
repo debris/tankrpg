@@ -1,14 +1,138 @@
-[gd_scene load_steps=8 format=3 uid="uid://c1kpo7odxbp1x"]
+[gd_scene load_steps=21 format=3 uid="uid://c1kpo7odxbp1x"]
 
 [ext_resource type="Script" uid="uid://dyxio481h6ibk" path="res://src/shoot_on_click.gd" id="1_6skci"]
+[ext_resource type="Script" uid="uid://cw2dt74eia04p" path="res://src/game_character.gd" id="1_c3vp1"]
 [ext_resource type="Texture2D" uid="uid://bsf8o128e1e48" path="res://assets/tanks/nice/Hull_05.png" id="1_o7glv"]
 [ext_resource type="PackedScene" uid="uid://bq0fpi8641yeu" path="res://src/bullet.tscn" id="2_lv5u0"]
 [ext_resource type="Texture2D" uid="uid://45byhs8lq5fa" path="res://assets/tanks/nice/Hull_01.png" id="3_d1fng"]
 [ext_resource type="Texture2D" uid="uid://0si3ng1te8dc" path="res://assets/tanks/nice/Gun_03.png" id="5_5xow0"]
 [ext_resource type="Texture2D" uid="uid://043aecofl25h" path="res://assets/tanks/nice/tank_side.png" id="6_sycpn"]
 [ext_resource type="Script" uid="uid://cveum6bjauqtr" path="res://src/circle.gd" id="7_lt8aw"]
+[ext_resource type="Script" uid="uid://dmiqxp4p0by5o" path="res://src/health.gd" id="9_nvjtk"]
+[ext_resource type="Script" uid="uid://1bhvdr12em3r" path="res://src/health_bar.gd" id="10_1k7im"]
 
-[node name="BossA" type="Node2D"]
+[sub_resource type="Animation" id="Animation_1k7im"]
+resource_name = "shoot"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RotationRoot/Body/TowerA/Gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-6, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_fggg6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RotationRoot/Body/TowerA/Gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fggg6"]
+_data = {
+&"RESET": SubResource("Animation_fggg6"),
+&"shoot": SubResource("Animation_1k7im")
+}
+
+[sub_resource type="Animation" id="Animation_5qqah"]
+resource_name = "shoot"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-6, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_yvgdy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yvgdy"]
+_data = {
+&"RESET": SubResource("Animation_yvgdy"),
+&"shoot": SubResource("Animation_5qqah")
+}
+
+[sub_resource type="Animation" id="Animation_xbdup"]
+resource_name = "shoot"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-6, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hha46"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hha46"]
+_data = {
+&"RESET": SubResource("Animation_hha46"),
+&"shoot": SubResource("Animation_xbdup")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_c3vp1"]
+radius = 72.0
+
+[node name="BossA" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_c3vp1")
+metadata/_custom_type_script = "uid://cw2dt74eia04p"
 
 [node name="Line2D" type="Line2D" parent="."]
 texture_repeat = 2
@@ -29,12 +153,12 @@ autostart = true
 position = Vector2(64, 0)
 metadata/_edit_group_ = true
 
-[node name="Hull05" type="Sprite2D" parent="RotationRoot/Body"]
+[node name="HullX" type="Sprite2D" parent="RotationRoot/Body"]
 position = Vector2(-8, -16)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_o7glv")
 
-[node name="Hull06" type="Sprite2D" parent="RotationRoot/Body"]
+[node name="HullX2" type="Sprite2D" parent="RotationRoot/Body"]
 position = Vector2(-8, 16)
 rotation = 3.14159
 scale = Vector2(0.25, 0.25)
@@ -43,38 +167,51 @@ texture = ExtResource("1_o7glv")
 [node name="TowerA" type="Node2D" parent="RotationRoot/Body"]
 position = Vector2(-24, -40)
 
-[node name="Shoot" type="Node" parent="RotationRoot/Body/TowerA" node_paths=PackedStringArray("shooter", "bullet_origin")]
+[node name="Shoot" type="Node" parent="RotationRoot/Body/TowerA" node_paths=PackedStringArray("shooter", "bullet_origin", "animation_player")]
 script = ExtResource("1_6skci")
 shooter = NodePath("../../../..")
 bullet_origin = NodePath("..")
 bullet_scene = ExtResource("2_lv5u0")
+animation_player = NodePath("../ShootAnimationPlayer")
 metadata/_custom_type_script = "uid://dyxio481h6ibk"
 
-[node name="Hull04" type="Sprite2D" parent="RotationRoot/Body/TowerA"]
+[node name="ShootAnimationPlayer" type="AnimationPlayer" parent="RotationRoot/Body/TowerA"]
+root_node = NodePath("../../../..")
+libraries = {
+&"": SubResource("AnimationLibrary_fggg6")
+}
+
+[node name="Hull" type="Sprite2D" parent="RotationRoot/Body/TowerA"]
 rotation = 1.5708
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("3_d1fng")
 
-[node name="Gun03" type="Sprite2D" parent="RotationRoot/Body/TowerA"]
+[node name="Gun" type="Sprite2D" parent="RotationRoot/Body/TowerA"]
 rotation = 1.5708
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("5_5xow0")
 
 [node name="TowerA2" type="Node2D" parent="RotationRoot/Body"]
 
-[node name="Shoot" type="Node" parent="RotationRoot/Body/TowerA2" node_paths=PackedStringArray("shooter", "bullet_origin")]
+[node name="Shoot" type="Node" parent="RotationRoot/Body/TowerA2" node_paths=PackedStringArray("shooter", "bullet_origin", "animation_player")]
 script = ExtResource("1_6skci")
 shooter = NodePath("../../../..")
 bullet_origin = NodePath("..")
 bullet_scene = ExtResource("2_lv5u0")
+animation_player = NodePath("../ShootAnimationPlayer")
 metadata/_custom_type_script = "uid://dyxio481h6ibk"
 
-[node name="Hull03" type="Sprite2D" parent="RotationRoot/Body/TowerA2"]
+[node name="ShootAnimationPlayer" type="AnimationPlayer" parent="RotationRoot/Body/TowerA2"]
+libraries = {
+&"": SubResource("AnimationLibrary_yvgdy")
+}
+
+[node name="Hull" type="Sprite2D" parent="RotationRoot/Body/TowerA2"]
 rotation = 1.5708
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("3_d1fng")
 
-[node name="Gun04" type="Sprite2D" parent="RotationRoot/Body/TowerA2"]
+[node name="Gun" type="Sprite2D" parent="RotationRoot/Body/TowerA2"]
 rotation = 1.5708
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("5_5xow0")
@@ -82,23 +219,54 @@ texture = ExtResource("5_5xow0")
 [node name="TowerA3" type="Node2D" parent="RotationRoot/Body"]
 position = Vector2(-24, 40)
 
-[node name="Shoot" type="Node" parent="RotationRoot/Body/TowerA3" node_paths=PackedStringArray("shooter", "bullet_origin")]
+[node name="Shoot" type="Node" parent="RotationRoot/Body/TowerA3" node_paths=PackedStringArray("shooter", "bullet_origin", "animation_player")]
 script = ExtResource("1_6skci")
 shooter = NodePath("../../../..")
 bullet_origin = NodePath("..")
 bullet_scene = ExtResource("2_lv5u0")
+animation_player = NodePath("../ShootAnimationPlayer")
 metadata/_custom_type_script = "uid://dyxio481h6ibk"
 
-[node name="Hull02" type="Sprite2D" parent="RotationRoot/Body/TowerA3"]
+[node name="ShootAnimationPlayer" type="AnimationPlayer" parent="RotationRoot/Body/TowerA3"]
+libraries = {
+&"": SubResource("AnimationLibrary_hha46")
+}
+
+[node name="Hull" type="Sprite2D" parent="RotationRoot/Body/TowerA3"]
 rotation = 1.5708
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("3_d1fng")
 
-[node name="Gun05" type="Sprite2D" parent="RotationRoot/Body/TowerA3"]
+[node name="Gun" type="Sprite2D" parent="RotationRoot/Body/TowerA3"]
 rotation = 1.5708
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("5_5xow0")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_c3vp1")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("9_nvjtk")
+current_health = 100.0
+max_health = 100.0
+metadata/_custom_type_script = "uid://dmiqxp4p0by5o"
+
+[node name="HealthBarRoot" type="Node2D" parent="."]
+top_level = true
+
+[node name="HealthBar" type="ProgressBar" parent="HealthBarRoot"]
+offset_left = -32.0
+offset_top = 88.0
+offset_right = 32.0
+offset_bottom = 120.0
+script = ExtResource("10_1k7im")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../HealthBarRoot")
+update_rotation = false
+
+[connection signal="on_hit" from="." to="Health" method="take_damage"]
 [connection signal="timeout" from="Timer" to="RotationRoot/Body/TowerA/Shoot" method="shoot"]
 [connection signal="timeout" from="Timer" to="RotationRoot/Body/TowerA2/Shoot" method="shoot"]
 [connection signal="timeout" from="Timer" to="RotationRoot/Body/TowerA3/Shoot" method="shoot"]
+[connection signal="health_changed" from="Health" to="HealthBarRoot/HealthBar" method="set_health"]

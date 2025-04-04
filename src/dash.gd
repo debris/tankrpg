@@ -1,7 +1,7 @@
 extends Node
 class_name DashOnSpace
 
-@export var player: PlayerCharacter
+@export var player: GameCharacter
 
 func dash():
 	var tween = create_tween()

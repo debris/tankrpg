@@ -1,7 +1,7 @@
 extends Node
 class_name WsadTankMovement
 
-@export var character: PlayerCharacter
+@export var character: GameCharacter
 @export var animation_player: AnimationPlayer
 
 func _process(delta: float) -> void:

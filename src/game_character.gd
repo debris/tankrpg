@@ -1,5 +1,5 @@
 extends CharacterBody2D
-class_name PlayerCharacter
+class_name GameCharacter
 
 signal on_hit(damage: float)
 
